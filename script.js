@@ -2,19 +2,26 @@ const container = document.querySelector('.grid-container');
 let rows = document.getElementsByClassName("gridRow");
 let cells = document.getElementsByClassName("cell");
 
+let isDrawing = false;
+
+
+function draw(e,cell){
+    if(!isDrawing) return;
+    cell.classList.add("cellColor");
+    console.log(e);
+};
 
 function makeGrid(size){
     //Creates rows
-    container.style.gridTemplateColumns = `repeat(${size}, 1fr)`
-    container.style.gridTemplateRows = `repeat(${size}, 1fr)`
+    container.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+    container.style.gridTemplateRows = `repeat(${size}, 1fr)`;
     for (let i = 0; i < size * size; i++) {
         let cell = document.createElement('div');
         cell.setAttribute('data-cell',`cell${i}`);
-        cell.addEventListener('mousemove', function(e){
-            cell.classList.add("cellColor");
-            console.log(e);
-        });
-        container.appendChild(cell).className = "cell";
+        cell.addEventListener('mousemove', function(e){draw(e,this)});
+        cell.addEventListener('mousedown', () => isDrawing = true);
+        cell.addEventListener('mouseup', () => isDrawing = false);
+        container.appendChild(cell);
     }
 }
 
